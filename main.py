@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 W = H = 1024
 BG = "#0f1720"
 PAPER = "#efeae0"
-GOLD = "#d4a017"
+GOLD = "#d5a017"
 WHITE = "#f6f5f1"
 GRAY = "#aab2b7"
 INK = "#202a32"
@@ -61,12 +61,12 @@ label(56,25,"THE GLOBAL LEDGER",BOLD(18),GOLD)
 label(723,29,"NO. 118  •  GLOBAL EDITION",BOLD(12),"#d1d7da")
 d.rectangle((56,60,968,62), fill="#34414b")
 label(56,82,"Wednesday 25 November 2026",BOLD(49),WHITE)
-label(59,148,"Five stories moving the world today",REG,GRAY)
+label(59,148,"Five developments shaping the world today",REG,GRAY)
 
-draw_card(56,196,"#b94350","SPACE · CAPE CANAVERAL",["Lunar lander","aces descent test"],"Reusable crewed lander clears final hover trial","24 Nov  /  RN","rocket")
-draw_card(522,196,"#138b83","MARKETS · TOKYO",["Yen steadies as","boj holds rates"],"Exporters rally after hold decision","24 Nov  /  NK","coin")
-draw_card(56,420,"#555da8","CLIMATE · NAIROBI",["Solar microgrids","reach 2m homes"],"Off-grid program scales across East Africa","24 Nov  /  UN","leaf")
-draw_card(522,420,"#d17738","CHESS · DOHA",["Chess worlds: Game 7","ends in draw"],"Tiebreaks loom after quiet endgame","24 Nov  /  FID","wave")
+draw_card(56,196,"#b94350","SPACE · CAPE CANAVERAL",["Lunar lander","clears descent test"],"Reusable crewed lander clears final hover trial","24 Nov  /  RN","rocket")
+draw_card(522,196,"#138b83","MARKETS · TOKYO",["Yen firms as","BOJ holds rates"],"Exporters rally after hold decision","24 Nov  /  NK","coin")
+draw_card(56,420,"#555da8","CLIMATE · NAIROBI",["Solar microgrids","now serve 2m homes"],"Off-grid program scales across East Africa","24 Nov  /  UN","leaf")
+draw_card(522,420,"#d17738","CHESS · DOHA",["Worlds: Game 7","finishes level"],"Tiebreaks loom after quiet endgame","24 Nov  /  FID","wave")
 
 # The day's lead story
 x,y,w,h = 56,650,912,236
@@ -84,7 +84,7 @@ line([(px-27,py+42),(px+27,py+42)],"#83a0a8",3)
 line([(px-36,py-31),(px+36,py-31)],"#83a0a8",3)
 for a,b in [(-18,-11),(18,-11),(-23,14),(23,14),(-27,42),(27,42)]:
     line([(px,py-58),(px+a,py+b)],"#526975",2)
-label(224,707,"Europe's offshore grid links three seas for the first time",BOLD(26),WHITE)
+label(224,707,"Europe connects offshore grids across three seas",BOLD(26),WHITE)
 label(224,758,"Interconnectors cut curtailment and smooth",REG,GRAY)
 label(224,782,"winter peaks across the North and Baltic.  /  24 Nov",REG,GRAY)
 
