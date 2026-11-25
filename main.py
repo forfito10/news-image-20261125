@@ -3,7 +3,7 @@ import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 W = H = 1024
-BG = "#101820"
+BG = "#0f1720"
 PAPER = "#efeae0"
 GOLD = "#d4a017"
 WHITE = "#f6f5f1"
@@ -61,7 +61,7 @@ label(56,25,"THE GLOBAL LEDGER",BOLD(18),GOLD)
 label(723,29,"NO. 118  •  GLOBAL EDITION",BOLD(12),"#d1d7da")
 d.rectangle((56,60,968,62), fill="#34414b")
 label(56,82,"Wednesday 25 November 2026",BOLD(49),WHITE)
-label(59,148,"Five stories shaping the day",REG,GRAY)
+label(59,148,"Five stories moving the world today",REG,GRAY)
 
 draw_card(56,196,"#b94350","SPACE · CAPE CANAVERAL",["Lunar lander","aces descent test"],"Reusable crewed lander clears final hover trial","24 Nov  /  RN","rocket")
 draw_card(522,196,"#138b83","MARKETS · TOKYO",["Yen steadies as","boj holds rates"],"Exporters rally after hold decision","24 Nov  /  NK","coin")
