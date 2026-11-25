@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 W = H = 1024
 BG = "#101820"
-PAPER = "#ece9e2"
+PAPER = "#efeae0"
 GOLD = "#d4a017"
 WHITE = "#f6f5f1"
 GRAY = "#aab2b7"
@@ -70,7 +70,7 @@ draw_card(522,420,"#d17738","CHESS · DOHA",["Chess worlds: Game 7","ends in dra
 
 # The day's lead story
 x,y,w,h = 56,650,912,236
-d.rounded_rectangle((x,y,x+w,y+h), radius=18, fill="#1b2733")
+d.rounded_rectangle((x,y,x+w,y+h), radius=18, fill="#1c2a38")
 green = "#62d0a1"
 label(224,674,"ENERGY  /  BRUSSELS",BOLD(13),green)
 d.rounded_rectangle((850,667,932,697),radius=15,fill="#176f70")
