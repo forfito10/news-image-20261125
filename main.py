@@ -1,26 +1,28 @@
-from PIL import Image, ImageDraw, ImageFont
+#!/usr/bin/env python3
+"""Render a compact editorial briefing as a 1080x1350 PNG."""
 import os
+from PIL import Image, ImageDraw, ImageFont
 
-WIDTH, HEIGHT = 1080, 1350
-BG = '#0f1720'
-PANEL = '#17232e'
-TEXT = '#f3f6f8'
-MUTED = '#aab7c2'
-TEAL = '#29d3c2'
+W, H = 1080, 1350
+BG = "#0f1720"
+PANEL = "#17232e"
+INK = "#f3f6f8"
+MUTED = "#a8b7c4"
+TEAL = "#42d6c5"
 
-stories = [
-    ('Huang returns as Nvidia CEO', 'Jensen Huang resumes the top role as Nvidia enters its next growth chapter.'),
-    ('CrowdStrike-Zscaler deal reaches $43.9B', 'The proposed tie-up would unite two major names in cloud security.'),
-    ('700,000 Russian soldiers killed', 'A new estimate puts the human cost of Russia’s war at a staggering scale.'),
-    ('RSF advances in Khartoum', 'Paramilitary forces push forward as fighting intensifies across Sudan’s capital.'),
-    ('ICJ hears Myanmar genocide case', 'The court opens hearings on allegations tied to the Rohingya campaign.'),
+STORIES = [
+    ("HUANG RETURNS AS NVIDIA CEO", "Jensen Huang has returned to the chief executive role as Nvidia reshapes its leadership around the next phase of the AI boom."),
+    ("CROWDSTRIKE AND ZSCALER: $43.9B", "A proposed $43.9 billion combination would unite two major cybersecurity firms and redraw the contest for cloud security."),
+    ("700,000 RUSSIAN SOLDIERS KILLED", "A new estimate puts Russian military deaths at roughly 700,000 since the invasion of Ukraine, underscoring the war's staggering toll."),
+    ("RSF ADVANCES IN KHARTOUM", "Sudan's Rapid Support Forces have pushed farther into Khartoum as fighting intensifies and civilians face worsening danger."),
+    ("ICJ HEARS MYANMAR GENOCIDE CASE", "The International Court of Justice has opened hearings on allegations that Myanmar committed genocide against the Rohingya."),
 ]
 
 
 def font(size, bold=False):
     candidates = [
-        '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf' if bold else '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-        '/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf' if bold else '/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf',
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/Library/Fonts/Arial Bold.ttf" if bold else "/Library/Fonts/Arial.ttf",
     ]
     for path in candidates:
         if os.path.exists(path):
@@ -28,11 +30,11 @@ def font(size, bold=False):
     return ImageFont.load_default()
 
 
-def wrap(draw, text, face, max_width):
-    words, lines, line = text.split(), [], ''
+def wrap(draw, text, face, width):
+    words, lines, line = text.split(), [], ""
     for word in words:
-        trial = f'{line} {word}'.strip()
-        if draw.textbbox((0, 0), trial, font=face)[2] <= max_width:
+        trial = f"{line} {word}".strip()
+        if draw.textlength(trial, font=face) <= width:
             line = trial
         else:
             if line:
@@ -43,34 +45,34 @@ def wrap(draw, text, face, max_width):
     return lines
 
 
-im = Image.new('RGB', (WIDTH, HEIGHT), BG)
-d = ImageDraw.Draw(im)
-margin = 76
-# Accent masthead
-d.rectangle((margin, 68, margin + 10, 144), fill=TEAL)
-d.text((margin + 32, 62), 'FIVE STORIES MOVING THE WORLD TODAY', font=font(39, True), fill=TEXT)
-d.text((margin, 123), 'NOVEMBER 25, 2026', font=font(18, True), fill=MUTED)
-d.text((margin, 171), 'THE WORLD, IN FIVE HEADLINES', font=font(17, True), fill=TEAL)
-d.line((margin, 211, WIDTH - margin, 211), fill='#31404d', width=2)
+def main():
+    image = Image.new("RGB", (W, H), BG)
+    draw = ImageDraw.Draw(image)
+    draw.rounded_rectangle((64, 66, 76, 292), radius=6, fill=TEAL)
+    draw.text((105, 73), "WORLD / BRIEFING", font=font(22, True), fill=TEAL)
+    draw.text((105, 119), "FIVE STORIES", font=font(66, True), fill=INK)
+    draw.text((105, 193), "MOVING THE WORLD TODAY", font=font(47, True), fill=INK)
+    draw.text((107, 267), "NOVEMBER 25 2026", font=font(22, True), fill=MUTED)
+    draw.line((64, 326, 1016, 326), fill="#344552", width=2)
+    head, body = font(26, True), font(20)
+    y = 354
+    for index, (headline, summary) in enumerate(STORIES, 1):
+        box = (64, y, 1016, y + 174)
+        draw.rounded_rectangle(box, radius=14, fill=PANEL)
+        draw.rounded_rectangle((64, y, 71, y + 174), radius=3, fill=TEAL)
+        draw.text((94, y + 22), f"{index:02d}", font=font(19, True), fill=TEAL)
+        x = 148
+        for n, line in enumerate(wrap(draw, headline, head, 820)):
+            draw.text((x, y + 17 + n * 34), line, font=head, fill=INK)
+        summary_y = y + 17 + max(1, len(wrap(draw, headline, head, 820))) * 34 + 6
+        for n, line in enumerate(wrap(draw, summary, body, 820)[:2]):
+            draw.text((x, summary_y + n * 28), line, font=body, fill=MUTED)
+        y += 190
+    draw.text((64, 1320), "THE DAY IN FIVE HEADLINES", font=font(16, True), fill="#708391")
+    output = os.environ.get("MAKEFUN_OUTPUT_DIR", ".")
+    os.makedirs(output, exist_ok=True)
+    image.save(os.path.join(output, "entry.png"), format="PNG", optimize=True)
 
-card_top, card_gap = 238, 18
-card_h = 197
-for i, (headline, summary) in enumerate(stories):
-    y = card_top + i * (card_h + card_gap)
-    d.rounded_rectangle((margin, y, WIDTH - margin, y + card_h), radius=16, fill=PANEL)
-    d.text((margin + 25, y + 21), f'{i + 1:02d}', font=font(20, True), fill=TEAL)
-    hx = margin + 82
-    hfont = font(30, True)
-    for j, line in enumerate(wrap(d, headline, hfont, WIDTH - margin - hx - 28)):
-        d.text((hx, y + 17 + j * 37), line, font=hfont, fill=TEXT)
-    summary_y = y + 115
-    sfont = font(18)
-    for j, line in enumerate(wrap(d, summary, sfont, WIDTH - margin * 2 - 50)):
-        d.text((margin + 25, summary_y + j * 26), line, font=sfont, fill=MUTED)
 
-d.line((margin, HEIGHT - 74, WIDTH - margin, HEIGHT - 74), fill='#31404d', width=2)
-d.text((margin, HEIGHT - 57), 'GLOBAL BRIEFING  /  FIVE DEVELOPMENTS TO KNOW', font=font(15, True), fill=MUTED)
-
-out_dir = os.environ.get('MAKEFUN_OUTPUT_DIR', '.')
-os.makedirs(out_dir, exist_ok=True)
-im.save(os.path.join(out_dir, 'entry.png'))
+if __name__ == "__main__":
+    main()
