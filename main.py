@@ -54,7 +54,7 @@ def main():
     draw.text((105, 193), "MOVING THE WORLD TODAY", font=font(47, True), fill=INK)
     draw.text((107, 267), "NOVEMBER 25 2026", font=font(22, True), fill=MUTED)
     draw.line((64, 326, 1016, 326), fill="#344552", width=2)
-    head, body = font(26, True), font(20)
+    head, body = font(27, True), font(20)
     y = 354
     for index, (headline, summary) in enumerate(STORIES, 1):
         box = (64, y, 1016, y + 174)
@@ -68,7 +68,7 @@ def main():
         for n, line in enumerate(wrap(draw, summary, body, 820)[:2]):
             draw.text((x, summary_y + n * 28), line, font=body, fill=MUTED)
         y += 190
-    draw.text((64, 1320), "THE DAY IN FIVE HEADLINES", font=font(16, True), fill="#708391")
+    draw.text((64, 1320), "compiled from global reporting - make.fun daily brief", font=font(16, True), fill="#708391")
     output = os.environ.get("MAKEFUN_OUTPUT_DIR", ".")
     os.makedirs(output, exist_ok=True)
     image.save(os.path.join(output, "entry.png"), format="PNG", optimize=True)
